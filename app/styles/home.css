@@ -1,0 +1,67 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: calc(100% - 95px);
+    float: right;
+    width: calc(100% - 200px);
+}
+
+#new-place-form {
+    width: 500px;
+    height: 400px;
+    background-color: #fff;
+    position: absolute;
+    top: 20%;
+    z-index: 1;
+    margin-left: 185px;
+    display: none;
+}
+
+.inner-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.title {
+    margin-left: 185px;
+    text-align: center;
+}
+
+.fade-in {
+    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 2s; /* Firefox < 16 */
+    -ms-animation: fadein 2s; /* Internet Explorer */
+    -o-animation: fadein 2s; /* Opera < 12.1 */
+    animation: fadein 2s;
+}
+
+.fade-out {
+    -webkit-animation: fadeout 2s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadeout 2s; /* Firefox < 16 */
+    -ms-animation: fadeout 2s; /* Internet Explorer */
+    -o-animation: fadeout 2s; /* Opera < 12.1 */
+    animation: fadeout 2s;
+}
+
+.form-field {
+    margin-top: 15px;
+}
+.form-group {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.venue-container {
+    padding: 10px;
+    display: flex;
+}
+
+.venue-container a {
+    margin-left: 5px;
+}

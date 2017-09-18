@@ -1,0 +1,36 @@
+.navbar-fixed-left {
+  width: 200px;
+  position: fixed;
+  border-radius: 0;
+  height: 100%;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;
+  width: 200px;
+}
+
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+  margin-top: -50px;
+  margin-left: 140px;
+}
+
+.my-places {
+  -webkit-padding-start: 0;
+  color: #fff;
+  list-style-type: none;
+}
+
+.my-place-info {
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 10px;
+    border: 1px solid #fff;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%;
+}
