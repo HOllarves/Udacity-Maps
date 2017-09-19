@@ -165,10 +165,10 @@ function Map() {
                 if (status === 'OK') {
                     self.placeAddress(result[0].formatted_address);
                 }
-            })
-        })
-        geocoder = new google.maps.Geocoder;
-    }
+            });
+        });
+        geocoder = new google.maps.Geocoder();
+    };
 
     /**
      * Filters the available places list
@@ -181,7 +181,7 @@ function Map() {
         }
         return ko.utils.arrayFilter(self.db(), place => {
             return place.name.toLowerCase().indexOf(search) >= 0;
-        })
+        });
     });
 
     /**
@@ -211,9 +211,9 @@ function Map() {
                         alert("Unable to fetch foursquare data");
                     }
                 }
-            })
+            });
         }
-    }
+    };
 
     //Subscribing query input to the text filter
     self.query.subscribe(self.textFilter);
@@ -231,7 +231,7 @@ function Map() {
             form.className = 'fade-in';
             form.style.display = 'block';
         }
-    }
+    };
 
     /**
      * Saves new place to the db observable
@@ -243,10 +243,10 @@ function Map() {
             address: self.placeAddress(),
             lat: self.placeLat(),
             lng: self.placeLng()
-        }
+        };
         self.db.push(location);
         self.createMarkers(self.db());
-    }
+    };
 
     /**
      * Creates new markers and puts them on the map
@@ -267,7 +267,7 @@ function Map() {
             location = [];
             ko.utils.arrayForEach(self.db(), place => {
                 location.push(place);
-            })
+            });
         }
         location.forEach(place => {
             let marker = new google.maps.Marker({
@@ -292,7 +292,7 @@ function Map() {
                 marker.setIcon(defaultIcon);
             });
         });
-    }
+    };
 
     /**
      * Hides all markers on the map
@@ -303,7 +303,7 @@ function Map() {
             marker.setMap(null);
         });
         self.markers = [];
-    }
+    };
 
     /**
      * Toggles drawing tool
@@ -334,8 +334,8 @@ function Map() {
             // Make sure the search is re-done if the poly is changed.
             self.polygon.getPath().addListener('set_at', self.searchWithinPolygon);
             self.polygon.getPath().addListener('insert_at', self.searchWithinPolygon);
-        })
-    }
+        });
+    };
 
     /**
      * Triggers search using the drawing manager
@@ -349,47 +349,48 @@ function Map() {
                 } else {
                     marker.setMap(null);
                 }
-            })
+            });
         }
-    }
+    };
 
     /**
      * Loads Google Maps InfoWindow
      */
     self.loadInfoWindow = (marker, infowindow) => {
+        function getStreetView(data, status) {
+            if (status == google.maps.StreetViewStatus.OK) {
+                let nearStreetViewLocation = data.location.latLng,
+                    heading = google.maps.geometry.spherical.computeHeading(
+                        nearStreetViewLocation, marker.position);
+
+                infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+                let panoramaOptions = {
+                    position: nearStreetViewLocation,
+                    pov: {
+                        heading: heading,
+                        pitch: 30
+                    }
+                };
+                let panorama = new google.maps.StreetViewPanorama(
+                    document.getElementById('pano'), panoramaOptions);
+            } else {
+                infowindow.setContent('<div>' + marker.title + '</div>' +
+                    '<div>No Street View Found</div>');
+            }
+        }
         if (infowindow.marker != marker) {
             infowindow.setContent('');
             infowindow.marker = marker;
             infowindow.addListener('closeclick', () => {
                 infowindow.marker = null;
-            })
+            });
 
             let streetViewService = new google.maps.StreetViewService(),
                 radius = 50;
-            function getStreetView(data, status) {
-                if (status == google.maps.StreetViewStatus.OK) {
-                    let nearStreetViewLocation = data.location.latLng,
-                        heading = google.maps.geometry.spherical.computeHeading(
-                            nearStreetViewLocation, marker.position);
 
-                    infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-                    let panoramaOptions = {
-                        position: nearStreetViewLocation,
-                        pov: {
-                            heading: heading,
-                            pitch: 30
-                        }
-                    }
-                    let panorama = new google.maps.StreetViewPanorama(
-                        document.getElementById('pano'), panoramaOptions);
-                } else {
-                    infowindow.setContent('<div>' + marker.title + '</div>' +
-                        '<div>No Street View Found</div>');
-                }
-            }
             streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
             infowindow.open(map, marker);
-        }
+        };
     }
 
     /**
