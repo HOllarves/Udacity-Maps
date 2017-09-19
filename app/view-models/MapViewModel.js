@@ -390,8 +390,8 @@ function Map() {
 
             streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
             infowindow.open(map, marker);
-        };
-    }
+        }
+    };
 
     /**
      * Changes marker color
@@ -405,7 +405,7 @@ function Map() {
             new google.maps.Point(10, 34),
             new google.maps.Size(21, 34));
         return markerImage;
-    }
+    };
     //Initializing program
     self.init();
 }
