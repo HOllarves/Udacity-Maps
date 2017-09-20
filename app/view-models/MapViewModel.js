@@ -172,8 +172,8 @@ function Map() {
     };
 
     self.googleMapsOnError = () => {
-        alert("Unable to communicate with Google Maps API")
-    }
+        alert("Unable to communicate with Google Maps API");
+    };
 
     /**
      * Filters the available places list
@@ -186,7 +186,7 @@ function Map() {
                 return self.db();
             } else {
                 return ko.utils.arrayFilter(self.db(), place => {
-                    return place.name.toLowerCase().indexOf(search) >= 0
+                    return place.name.toLowerCase().indexOf(search) >= 0;
                 });
             }
         },
@@ -195,14 +195,14 @@ function Map() {
             if (!search) {
                 return self.db();
             } else {
-                let matches = []
+                let matches = [];
                 ko.utils.arrayFilter(self.db(), place => {
                     if (place.name.toLowerCase().indexOf(search) >= 0) {
-                        matches.push(place)
+                        matches.push(place);
                     }
                 });
-                self.createMarkers(matches)
-                return matches
+                self.createMarkers(matches);
+                return matches;
             }
         }
     });
@@ -312,9 +312,9 @@ function Map() {
                 self.loadInfoWindow(marker, largeInfowindow);
                 marker.setAnimation(google.maps.Animation.BOUNCE);
                 setTimeout(() => {
-                    marker.setAnimation(null)
-                }, 2000)
-                self.openInstaModal(place)
+                    marker.setAnimation(null);
+                }, 2000);
+                self.openInstaModal(place);
             });
             marker.addListener('mouseover', () => {
                 marker.setIcon(selectedIcon);
