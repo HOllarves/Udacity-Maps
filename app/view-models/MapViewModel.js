@@ -168,20 +168,43 @@ function Map() {
             });
         });
         geocoder = new google.maps.Geocoder();
+        self.createMarkers();
     };
+
+    self.googleMapsOnError = () => {
+        alert("Unable to communicate with Google Maps API")
+    }
 
     /**
      * Filters the available places list
      * 
      */
-    self.textFilter = ko.computed(() => {
-        let search = self.query().toLowerCase();
-        if (!search) {
-            return self.db();
+    self.textFilter = ko.pureComputed({
+        read: function () {
+            let search = self.query().toLowerCase();
+            if (!search) {
+                return self.db();
+            } else {
+                return ko.utils.arrayFilter(self.db(), place => {
+                    return place.name.toLowerCase().indexOf(search) >= 0
+                });
+            }
+        },
+        write: function () {
+            let search = self.query().toLowerCase();
+            if (!search) {
+                return self.db();
+            } else {
+                let matches = []
+                ko.utils.arrayFilter(self.db(), place => {
+                    if (place.name.toLowerCase().indexOf(search) >= 0) {
+                        matches.push(place)
+                    }
+                });
+                self.createMarkers(matches)
+                return matches
+            }
         }
-        return ko.utils.arrayFilter(self.db(), place => {
-            return place.name.toLowerCase().indexOf(search) >= 0;
-        });
     });
 
     /**
@@ -210,6 +233,9 @@ function Map() {
                     } else {
                         alert("Unable to fetch foursquare data");
                     }
+                },
+                error: () => {
+                    alert("Unable to fetch foursquare data");
                 }
             });
         }
@@ -253,7 +279,7 @@ function Map() {
      * @param {Object} location
      * 
      */
-    self.createMarkers = (location) => {
+    self.createMarkers = (locations) => {
         let bounds = new google.maps.LatLngBounds(),
             largeInfowindow = new google.maps.InfoWindow(),
             defaultIcon = self.makeMarkerIcon('19cfd6'),
@@ -263,13 +289,13 @@ function Map() {
         if (self.markers.length > 0) {
             self.hideMarkers();
         }
-        if (location.length <= 0 || location.length === undefined) {
-            location = [];
+        if (locations === undefined) {
+            locations = [];
             ko.utils.arrayForEach(self.db(), place => {
-                location.push(place);
+                locations.push(place);
             });
         }
-        location.forEach(place => {
+        locations.forEach(place => {
             let marker = new google.maps.Marker({
                 position: {
                     lat: place.lat,
@@ -284,6 +310,11 @@ function Map() {
             bounds.extend(marker.position);
             marker.addListener('click', () => {
                 self.loadInfoWindow(marker, largeInfowindow);
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => {
+                    marker.setAnimation(null)
+                }, 2000)
+                self.openInstaModal(place)
             });
             marker.addListener('mouseover', () => {
                 marker.setIcon(selectedIcon);
