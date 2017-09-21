@@ -169,11 +169,6 @@ function Map() {
         });
         geocoder = new google.maps.Geocoder();
         self.createMarkers();
-        setTimeout(() => {
-            if (!google || !google.maps) {
-                alert("Unable to communicate with Google Maps")
-            }
-        }, 5000);
     };
 
     /**
