@@ -169,10 +169,11 @@ function Map() {
         });
         geocoder = new google.maps.Geocoder();
         self.createMarkers();
-    };
-
-    self.googleMapsOnError = () => {
-        alert("Unable to communicate with Google Maps API");
+        setTimeout(() => {
+            if (!google || !google.maps) {
+                alert("Unable to communicate with Google Maps")
+            }
+        }, 5000);
     };
 
     /**
@@ -213,6 +214,14 @@ function Map() {
      * @param {Object} loc - Selected location
      */
     self.openInstaModal = (loc) => {
+        self.markers.forEach(marker => {
+            if (marker.title == loc.name) {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(() => {
+                    marker.setAnimation(null);
+                }, 2000);
+            }
+        });
         if (!self.fq_access_token()) {
             window.open("https://foursquare.com/oauth2/authenticate?client_id=" + FOUR_SQ_CLIENT_ID + "&response_type=token&redirect_uri=http://localhost:8080", "_self");
         } else {

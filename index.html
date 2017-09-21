@@ -96,8 +96,14 @@
     <script src="app/lib/knockout.min.js"></script>
     <!-- ViewModels -->
     <script src="app/view-models/MapViewModel.js"></script>
+    <!-- Google Maps Error Handling -->
+    <script>
+        window.gm_authFailure = function () {
+            alert('Google maps failed to load!');
+        }
+    </script>
     <!-- Google Maps API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyBSv65ddhdPCifjpcnmMa57BNpxQ9E6GcE&v=3&callback=initMap&onerror=googleMapsOnError"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyBSv65ddhdPCifjpcnmMa57BNpxQ9E6GcE&v=3&callback=initMap"></script>
 </body>
 
 </html>
