@@ -189,6 +189,7 @@ function Map() {
         write: function () {
             let search = self.query().toLowerCase();
             if (!search) {
+                self.createMarkers();
                 return self.db();
             } else {
                 let matches = [];
@@ -447,6 +448,10 @@ function Map() {
 
 function initMap() {
     ko.applyBindings(new Map());
+}
+
+function errorMap() {
+    alert("Unable to load Google Maps API");
 }
 
 
