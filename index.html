@@ -99,12 +99,13 @@
     <!-- Google Maps Error Handling -->
     <script>
         window.gm_authFailure = function () {
-            alert('Google maps failed to load!');
+            alert('Invalid API key');
         }
     </script>
     <!-- Google Maps API -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry,drawing&key=AIzaSyAUfFAA30AcTNMQCTIb-6qUS8YOH8FmtXM&v=3&callback=initMap"
         onerror="errorMap()"></script>
+
 </body>
 
 </html>
